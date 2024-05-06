@@ -1,0 +1,6 @@
+*.log
+/img/
+/tensorboard/
+/vaitrace/
+/build/dataset/
+/build/tb_logs/
