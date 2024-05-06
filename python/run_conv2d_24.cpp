@@ -5,6 +5,7 @@
  * *****************************************************************************************
  *
  * @file run_conv2d_24.cpp:
+ * @comments This file is written by, or with the help of, ChatGPT.
  *
  * MODIFICATION HISTORY:
  *

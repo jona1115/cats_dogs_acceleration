@@ -6,6 +6,7 @@
 ###########################################################################################
 #  
 #  @file catdog_inference.py
+#  @comments This file is written by, or with the help of, ChatGPT.
 #  
 #  MODIFICATION HISTORY:
 # 
