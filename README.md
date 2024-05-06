@@ -6,7 +6,8 @@ The goal of this project:
 1. Obtain the model and create the Python inference code to run the inference.
 2. Pick a layer in the model and, write a C++ implementation of that layer, and use that code when running inference.
 3. Use VHDL to write an accelerator for that layer.
-4. Try turning the model into a xmodel and running it on my Kria board's DPU.
+4. Use [Tensil](https://www.tensil.ai/) to create custom HW accelerator for the model.
+5. Try turning the model into an xmodel and running it on my Kria board's DPU.
 
 There are several parts to this project:
 1. Python code: /python/
