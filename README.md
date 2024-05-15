@@ -10,12 +10,14 @@ The goal of this project:
 5. Try turning the model into an xmodel and running it on my Kria board's DPU.
 
 There are several parts to this project:
-1. Python code: /python/
-2. VHDL IP: /VHDL/
-3. Other coming soon...
+1. [Python code](https://github.com/jona1115/cats_dogs_acceleration/tree/main/python)
+2. [Vivado XSA and Petalinux build](https://github.com/jona1115/cats_dogs_acceleration/blob/main/vivadoTRD_and_Petalinux/README.md)
+3. VHDL IP (Coming soon...)
+4. Other coming soon...
 
 Current Progress:
 | Date | Progress |
 | --- | --- |
-| 3/28/2024 | Followed Vitis-AI tutorial and trained the model |
+| 5/14/2024 | Created bootable Petalinux build for development |
 | 5/5/2024 | Created inference code that uses custom c++ layer implementation |
+| 3/28/2024 | Followed Vitis-AI tutorial and trained the model |
