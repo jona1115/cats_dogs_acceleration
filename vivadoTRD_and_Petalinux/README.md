@@ -1,1 +1,78 @@
-h
+This Tutorial will guide you on how to set up the DPU IP, and Petalinux system for development.
+
+The tutorial this is based on [this Hackster's Tutorial](https://www.hackster.io/shreyasnr/kv260-dpu-trd-petalinux-2022-1-vivado-flow-000c0b)
+
+Tested and worked with:
+- petalinux v2022.2
+- kria's 2022.2 bsp
+- Vitis-AI 3.0's TRD
+- Xilinx Kria KV260 Board
+- Vivado v2023.1
+
+***
+# DPU in Vivado
+1. Download the DPU TRD (To the best of my knowledge TRD just means it is an example project) [here](https://github.com/Xilinx/Vitis-AI/tree/3.0/dpu)
+2. Follow the tutorial (step 1) and edit the following files      
+    Edit trd_prj.tcl located at D:\SampleProjects\Vivado\DPU_TRD\DPUCZDX8G\prj\Vivado\scripts\trd_prj.tcl       
+    ```
+    dict set dict_prj dict_sys prj_name                  {KV260}
+    dict set dict_prj dict_sys prj_part                  {xck26-sfvc784-2LV-c}
+    dict set dict_prj dict_sys prj_board                 {KV260}
+    dict set dict_prj dict_param  DPU_CLK_MHz            {275}
+    dict set dict_prj dict_param  DPU_NUM                {1}
+    dict set dict_prj dict_param  DPU_SFM_NUM            {0}
+    dict set dict_prj dict_param  DPU_URAM_PER_DPU       {50}
+    ```
+    Edit trd_bd.tcl located at      D:\SampleProjects\Vivado\DPU_TRD\DPUCZDX8G\prj\Vivado\scripts\base\trd_bd.tcl       
+    ```
+    dict set dict_prj dict_param HP_CLK_MHz              {274}
+    ```
+    Then source the tcl in Vivado terminal: source path/to/trd_prj.tcl
+3. Generate Bitstream
+
+***
+# Petalinux
+1. Follow steps 2.4-2.11, summary:  
+    1. `petalinux-create -t project -s <location-of-bsp-file>.bsp [--name <project name>]  ` 
+    2. `cd` into xxx/        
+    3. `petalinux-config --get-hw-description <location-of-xsa-file>`
+    4. `petalinux-config -c kernel`      
+        ```
+            Device Drivers -->      
+            Misc devices -->        
+            <*> Xilinux Deep learning Processing Unit (DPU) Driver  
+        ```
+    5. Copy stuff is in the TRD's project's /prj/Vivado/sw/meta-vitis (There should be four folders):   
+        `recipes-apps, recipes-core, recipes-kernel, recipes-vitis-ai`    
+        copy them into petalinux project's project-spec/meta-user
+    6. Add to <your_petalinux_project_dir>/project-spec/meta-user/conf/user-rootfsconfig:
+        ```
+        CONFIG_vitis-ai-library
+        CONFIG_vitis-ai-library-dev
+        CONFIG_vitis-ai-library-dbg
+        ```
+    7. Add these to petalinuxbsp.conf:  
+        ```
+        IMAGE_INSTALL:append = " vitis-ai-library "     
+        IMAGE_INSTALL:append = " vitis-ai-library-dev "     
+        #IMAGE_INSTALL:append = " dpu-sw-optimize "     
+        IMAGE_INSTALL:append = " resnet50 "     
+        ```
+        Note: Idk what dpu-sw-optimize is so I skipped it       
+    8. Run `petalinux-config -c rootfs`
+        Select the required packages, Don't select vitis-ai-library-dbg.
+    9. Build (took me 151 minutes): petalinux-build    
+    10. Package: `petalinux-package --wic --images-dir images/linux/ --bootfiles "ramdisk.cpio.gz.u-boot,boot.scr,Image,system.dtb,system-zynqmp-sck-kv-g-revB.dtb" --disk-name "mmcblk1" --wic-extra-args "-c gzip"`
+2. Burn it (just use Balena Etcher) onto a SD card and you should be good to go!
+<br>
+
+
+> Note: I skipped step 5 as IDK what that is doing  
+> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; I will probably regret this later  ~\\^^/~  
+
+<br>
+
+***
+# More
+- Now that we have that, it is kinda barebone, lets add gcc, g++, open-ssh, kernel tracers, etc.
+- I also want to use squashFS instead of the current ramFS, this is so that I can drag and drop stuff from a Windows computer
