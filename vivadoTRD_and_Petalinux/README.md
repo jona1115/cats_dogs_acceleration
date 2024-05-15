@@ -3,8 +3,8 @@ This Tutorial will guide you on how to set up the DPU IP, and Petalinux system f
 The tutorial this is based on [this Hackster's Tutorial](https://www.hackster.io/shreyasnr/kv260-dpu-trd-petalinux-2022-1-vivado-flow-000c0b)
 
 Tested and worked with:
-- petalinux v2022.2
-- kria's 2022.2 bsp
+- Petalinux v2022.2
+- Kria's 2022.2 bsp
 - Vitis-AI 3.0's TRD
 - Xilinx Kria KV260 Board
 - Vivado v2023.1
@@ -34,7 +34,7 @@ Tested and worked with:
 # Petalinux
 1. Follow steps 2.4-2.11, summary:  
     1. `petalinux-create -t project -s <location-of-bsp-file>.bsp [--name <project name>]  ` 
-    2. `cd` into xxx/        
+    2. `cd` into the folder `petalinux-create` made.
     3. `petalinux-config --get-hw-description <location-of-xsa-file>`
     4. `petalinux-config -c kernel`      
         ```
@@ -44,7 +44,7 @@ Tested and worked with:
         ```
     5. Copy stuff is in the TRD's project's /prj/Vivado/sw/meta-vitis (There should be four folders):   
         `recipes-apps, recipes-core, recipes-kernel, recipes-vitis-ai`    
-        copy them into petalinux project's project-spec/meta-user
+        copy them into petalinux project's `project-spec/meta-user` folder, replace existing file
     6. Add to <your_petalinux_project_dir>/project-spec/meta-user/conf/user-rootfsconfig:
         ```
         CONFIG_vitis-ai-library
@@ -63,12 +63,11 @@ Tested and worked with:
         Select the required packages, Don't select vitis-ai-library-dbg.
     9. Build (took me 151 minutes): petalinux-build    
     10. Package: `petalinux-package --wic --images-dir images/linux/ --bootfiles "ramdisk.cpio.gz.u-boot,boot.scr,Image,system.dtb,system-zynqmp-sck-kv-g-revB.dtb" --disk-name "mmcblk1" --wic-extra-args "-c gzip"`
-2. Burn it (just use Balena Etcher) onto a SD card and you should be good to go!
+2. Burn it (just use [Balena Etcher](https://etcher.balena.io/)) onto a SD card and you should be good to go!  
 <br>
 
-
 > Note: I skipped step 5 as IDK what that is doing  
-> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; I will probably regret this later  ~\\^^/~  
+> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; I will probably regret this later :-/
 
 <br>
 
