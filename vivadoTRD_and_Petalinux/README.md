@@ -1,6 +1,6 @@
 This Tutorial will guide you on how to set up the DPU IP, and Petalinux system for development.
 
-The tutorial this is based on [this Hackster's Tutorial](https://www.hackster.io/shreyasnr/kv260-dpu-trd-petalinux-2022-1-vivado-flow-000c0b)
+> First two parts of this tutorial is based on [this Hackster's Tutorial](https://www.hackster.io/shreyasnr/kv260-dpu-trd-petalinux-2022-1-vivado-flow-000c0b)
 
 Tested and worked with:
 - Petalinux v2022.2
