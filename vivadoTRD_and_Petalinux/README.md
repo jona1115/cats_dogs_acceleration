@@ -69,8 +69,6 @@ Tested and worked with:
 > Note: I skipped step 5 as IDK what that is doing  
 > &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; I will probably regret this later :-/
 
-<br>
-
 ***
 # More
 - Now that we have that, it is kinda barebone, lets add gcc, g++, open-ssh, kernel tracers, etc.
@@ -84,12 +82,12 @@ Tested and worked with:
 ### opencv
 1. Just search (press `/`) for opencv and go trigger happy on all opencv related options.
 
-> Note: When you search, options will have numbers next to them "(1)", "(2)", etc. To select them, type the number and you will teleport to that part of the menu.
+> Tip: When you search, options will have numbers next to them "(1)", "(2)", etc. To select them, type the number and you will teleport to that part of the menu.
 
 ### open-ssh
 Now this is important for easy GitHub push/pull.
-1. Run `petalinux-config -c rootfs`
-2. Go into Image Features and deselect the dropbear version and select the openssh option
+1. Run `petalinux-config -c rootfs`.
+2. Go into `Image Features` and deselect the dropbear version and select the openssh option.
 3. Search for "openssh" and option (1), or other options, of the path: `Filesystem Packages -> console -> network -> openssh`
 4. Go into that option, there should be a bunch of openssh stuff, e.g. `openssh`, `openssh-ssh`, `openssh-sftp`, ..., `openssh-scp` I just selected all of them.
 
@@ -97,3 +95,6 @@ Now this is important for easy GitHub push/pull.
 This is for using vaitrace
 1. Follow: https://docs.amd.com/r/en-US/ug1414-vitis-ai/Installing-the-Vitis-AI-Profiler
 
+***
+# Using SquashFS
+coming soon
