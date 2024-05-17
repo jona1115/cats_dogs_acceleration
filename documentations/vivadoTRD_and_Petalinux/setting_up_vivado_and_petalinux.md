@@ -94,8 +94,9 @@ Now this is important for easy GitHub push/pull.
     2. Turned on `Filesystem Packages -> misc -> gcc-runtime` 
 2. Also: `misc/packagegroup-core-buildessential`
 
-### opencv
+### opencv, libmetal
 1. Just search (press `/`) for opencv and go trigger happy on all opencv related options.
+2. Do the same for libmetal
 
 > Tip: When you search, options will have numbers next to them "(1)", "(2)", etc. To select them, type the number and you will teleport to that part of the menu.
 
@@ -129,8 +130,12 @@ To fix this, in Petalinux OS (i.e. not on your host machine where you build Peta
     1. Check disk space: `df -h` (You want to see a size that is big, but you won't thats why it errored out)
     2. Do `lsblk`, and find the name of the 2nd partition (mine is called `/dev/mmcblk1`)
     3. Run `sudo parted /dev/mmcblk1`  
-        1. Type: `resizepart 2 100%`
+        1. Type: `resizepart 2 100%` then `yes`
         2. Type: `quit`  
         (At this point if you `lsblk` again you should see the 2nd partition size become bigger)
     4. Now, you want to resize the filesystem: `sudo resize2fs /dev/mmcblk1p2`  
     5. Verify using `df -h` that `/dev/mmcblk1p2` is now bigger in size. Also, try writting to it again (`dnf update`), it shouldn't errored out anymore.
+- In Petalinux OS, one thing I find annoying is that pip is not in PATH, and you have to use pip3, I am too lazy to type one more character, so, to add it to PATH:  
+    1. `vi ~/.bashrc`
+    2. Add this line: `export PATH=$PATH:/home/petalinux/.local/bin`
+    3. `source ~/.bashrc`
