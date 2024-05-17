@@ -1,6 +1,4 @@
-This Tutorial will guide you on how to set up the DPU IP, and Petalinux system for development.
-
-> First two parts of this tutorial is based on [this Hackster's Tutorial](https://www.hackster.io/shreyasnr/kv260-dpu-trd-petalinux-2022-1-vivado-flow-000c0b)
+This Tutorial will guide you on how to set up the DPU IP, and Petalinux system for development, including some important troubleshooting tips.
 
 Tested and worked with:
 - Petalinux v2022.2
@@ -8,6 +6,9 @@ Tested and worked with:
 - Vitis-AI 3.0's TRD
 - Xilinx Kria KV260 Board
 - Vivado v2023.1
+
+<br>
+> First two parts of this tutorial is based on [this Hackster's Tutorial](https://www.hackster.io/shreyasnr/kv260-dpu-trd-petalinux-2022-1-vivado-flow-000c0b)
 
 ***
 # DPU in Vivado
@@ -110,7 +111,7 @@ This is for using vaitrace
 Notes: for later: in `Filesystem packages -> console -> utils` there are `screen` and `sccren` and `vim` and `zip` and `unzip` that are worth looking into, honestly there are a lot of fun stuff like in `Filesystem packages -> devel` there are numpy stuff 
 
 ***
-# Trouble shooting
+# Troubleshooting
 - When adding stuff, I got an error while building:  
     `ERROR: Task (.../petalinux-image-minimal.bb:do_image_cpio) failed with exit code '1'`  
     I believe is some kind of file system type issue when trying to include big stuff like OpenCV into the project. To fix this, I followed [this answer by dark-dante](https://support.xilinx.com/s/question/0D54U00006OjQLCSA3/cannot-build-petalinux-due-to-componentsyoctolayersmetapetalinuxrecipescoreimagespetalinuximageminimalbb?language=en_US), summary:  
