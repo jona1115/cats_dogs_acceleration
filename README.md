@@ -18,6 +18,7 @@ There are several parts to this project:
 Current Progress:
 | Date | Progress |
 | --- | --- |
+| 5/17/2024 | Configure Petalinux to have necessary dependencies for development |
 | 5/14/2024 | Created bootable Petalinux build for development |
 | 5/5/2024 | Created inference code that uses custom c++ layer implementation |
 | 3/28/2024 | Followed Vitis-AI tutorial and trained the model |
