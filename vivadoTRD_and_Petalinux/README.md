@@ -8,6 +8,7 @@ Tested and worked with:
 - Vivado v2023.1
 
 <br>
+
 > First two parts of this tutorial is based on [this Hackster's Tutorial](https://www.hackster.io/shreyasnr/kv260-dpu-trd-petalinux-2022-1-vivado-flow-000c0b)
 
 ***
