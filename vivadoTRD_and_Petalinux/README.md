@@ -31,7 +31,8 @@ Tested and worked with:
 3. Generate Bitstream
 
 ***
-# Petalinux
+# Petalinux (Base build)
+> Important: If you never build Petalinux before, there are several dependencies you need: [CMake and libidn11](https://support.xilinx.com/s/question/0D54U00007wTNEoSAO/problem-running-tcl-command-swrfdcv111generate-failed-to-generate-cmake-files-linux?language=en_US)
 1. Follow steps 2.4-2.11, summary:  
     1. `petalinux-create -t project -s <location-of-bsp-file>.bsp [--name <project name>]  ` 
     2. `cd` into the folder `petalinux-create` made.
@@ -71,8 +72,20 @@ Tested and worked with:
 
 ***
 # More
-- Now that we have that, it is kinda barebone, lets add gcc, g++, open-ssh, kernel tracers, etc.
-- I also want to use squashFS instead of the current ramFS, this is so that I can drag and drop stuff from a Windows computer
+- Now that we have that (a bootable OS!), it is kinda barebone, lets add gcc, g++, open-ssh, kernel tracers, etc.
+
+### openssh
+Now this is important for easy GitHub push/pull.
+1. Run `petalinux-config -c rootfs`.
+2. Go into `Image Features` and deselect the dropbear version and select the openssh option. This will introduce some issues, follow these fix:
+    1. [Fix for build error because something repetalinquires dropbear](https://support.xilinx.com/s/question/0D54U00005WcRhqSAF/petalinux-20221-building-sdk-package-dropbear-conflicting-requests?language=en_US). Summary:  
+    Look for the file “packagegroup-petalinux-som.bb” in the yocto layers (petalinux_prj_dir/components/yocto/layers/meta-som/recipes-core/packagegroups). Replace `packagegroup-core-ssh-dropbear` by `packagegroup-core-ssh-openssh`.
+    2. Deselect `Filesystem Packages -> misc -> package-group-core-ssh-dropbear` [as mentioned here](https://support.xilinx.com/s/question/0D52E00006sl3paSAA/petalinux-cannot-use-openssh-instead-of-dropbear?language=en_US). Summary:  
+        1. `Filesystem Packages -> misc -> package-group-core-ssh-dropbear`
+        2. Deselect `packagegroup-core-ssh-dropbear`
+3. Search for "openssh" and option (1), or other options, of the path: `Filesystem Packages -> console -> network -> openssh`
+4. Go into that option, there should be a bunch of openssh stuff, e.g. `openssh`, `openssh-ssh`, `openssh-sftp`, ..., `openssh-scp` I just selected all of them.
+
 ### gcc, g++
 1. [Followed this](https://support.xilinx.com/s/question/0D52E00006iHvSBSA0/adding-gcc-and-g-to-petalinux-project-revisited-2018?language=en_US), summary:
     1. `petalinux-config -c rootfs`
@@ -84,17 +97,38 @@ Tested and worked with:
 
 > Tip: When you search, options will have numbers next to them "(1)", "(2)", etc. To select them, type the number and you will teleport to that part of the menu.
 
-### open-ssh
-Now this is important for easy GitHub push/pull.
-1. Run `petalinux-config -c rootfs`.
-2. Go into `Image Features` and deselect the dropbear version and select the openssh option.
-3. Search for "openssh" and option (1), or other options, of the path: `Filesystem Packages -> console -> network -> openssh`
-4. Go into that option, there should be a bunch of openssh stuff, e.g. `openssh`, `openssh-ssh`, `openssh-sftp`, ..., `openssh-scp` I just selected all of them.
-
 ### Kernel Tracers
 This is for using vaitrace
 1. Follow: https://docs.amd.com/r/en-US/ug1414-vitis-ai/Installing-the-Vitis-AI-Profiler
 
+### Other important(-ish) stuff
+"ish" because these are probably stuff you can dnf install on the board later.
+- pkgconfig: Search for pkgconfig and select all of them.
+- Python stuff: Go to `Filesystem Packages -> misc -> python3...` and I just selected all of them. (I also have a 128GB SD card so I can splurg)
+- Git: Search for git and select all of them.
+
+Notes: for later: in `Filesystem packages -> console -> utils` there are `screen` and `sccren` and `vim` and `zip` and `unzip` that are worth looking into, honestly there are a lot of fun stuff like in `Filesystem packages -> devel` there are numpy stuff 
+
 ***
-# Using SquashFS
-coming soon
+# Trouble shooting
+- When adding stuff, I got an error while building:  
+    `ERROR: Task (.../petalinux-image-minimal.bb:do_image_cpio) failed with exit code '1'`  
+    I believe is some kind of file system type issue when trying to include big stuff like OpenCV into the project. To fix this, I followed [this answer by dark-dante](https://support.xilinx.com/s/question/0D54U00006OjQLCSA3/cannot-build-petalinux-due-to-componentsyoctolayersmetapetalinuxrecipescoreimagespetalinuximageminimalbb?language=en_US), summary:  
+    1. Change the root filesystem type:  
+        Run `petalinux-config` -> `Image Packaging Configuration` -> Change `Root filesystem type` from `INITRAMFS` to `EXT4 (SD/eMMC/SATA/USB)`
+    2. Add these lines to `<plnx-proj-root>/project-spec/meta-user/conf/petalinuxbsp.conf`:  
+    ```
+    IMAGE_FSTYPES:remove = "cpio cpio.gz cpio.bz2 cpio.xz cpio.lzma cpio.lz4 cpio.gz.u-boot"
+    IMAGE_FSTYPES_DEBUGFS:remove = "cpio cpio.gz cpio.bz2 cpio.xz cpio.lzma cpio.lz4 cpio.gz.u-boot"
+    ```
+- When booted Petalinux, for some reason, they will only allocate necessary space for the second partition, idk if this is Balena Etcher's fault or Petalinux tools but it is what it is. This will cause errors when trying to write to the filesystem when booted (like when you `dnf update`), and it will give you error that looks like:  
+`... [Failure writing output to destination] ...`  
+To fix this, in Petalinux OS (i.e. not on your host machine where you build Petalinux but on the BOOTED Petalinux OS), do these:  
+    1. Check disk space: `df -h` (You want to see a size that is big, but you won't thats why it errored out)
+    2. Do `lsblk`, and find the name of the 2nd partition (mine is called `/dev/mmcblk1`)
+    3. Run `sudo parted /dev/mmcblk1`  
+        1. Type: `resizepart 2 100%`
+        2. Type: `quit`  
+        (At this point if you `lsblk` again you should see the 2nd partition size become bigger)
+    4. Now, you want to resize the filesystem: `sudo resize2fs /dev/mmcblk1p2`  
+    5. Verify using `df -h` that `/dev/mmcblk1p2` is now bigger in size. Also, try writting to it again (`dnf update`), it shouldn't errored out anymore.
