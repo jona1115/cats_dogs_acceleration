@@ -47,7 +47,7 @@ model_after_conv2d_24 = Model(inputs=model.get_layer('conv2d_24').output, output
 # Load the shared library
 cpp_lib = ctypes.CDLL('./lib_run_conv2d_24.so')
 
-# Note layer conv24's info:  conv2d_24 (Conv2D)             (None, 7, 8, 128)    147584      ['add_4[0][0]']                  
+# Note layer conv24's info:  conv2d_24 (Conv2D)             (None, 7, 8, 128)    147584      ['add_4[0][0]']
 
 # Define the return type and argument types
 # cpp_lib.run_conv2d_24.restype = ctypes.POINTER(ctypes.c_float * 7*8*128)  # Define output size accordingly
