@@ -13,6 +13,10 @@ Note:
 - To prepare the dataset, and create the model, follow [this Vitis-AI tutorial](https://github.com/Xilinx/Vitis-AI-Tutorials/blob/1.4/Design_Tutorials/08-tf2_flow/README.md)
 - The Vitis-AI tutorial is trying to demo using the DPU IP in a ZCU102, which I am too poor to buy, so my project is on running this model on my Xilinx Kria KV260.
 
-Important:
-- I am using a non prebuilt version of Vitis-AI (xilinx/vitis-ai-tensorflow2-gpu:3.5.0.001-b2b227921). I suggest following [this tutorial](https://xilinx.github.io/Vitis-AI/3.5/html/docs/install/install.html) to install it, when I did it, I followed [Option 2: Build the Docker Container from Xilinx Recipes](https://xilinx.github.io/Vitis-AI/3.5/html/docs/install/install.html#option-2-build-the-docker-container-from-xilinx-recipes).
-  - To start the container, assuming you built the docker, run: `sudo ./docker_run.sh xilinx/vitis-ai-tensorflow2-gpu:3.5.0.001-b2b227921`
+***
+# How to run?
+Note: I am using a nonprebuilt version of Vitis-AI (Xilinx/vitis-ai-tensorflow2-gpu:3.5.0.001-b2b227921). I suggest following [this tutorial](https://xilinx.github.io/Vitis-AI/3.5/html/docs/install/install.html) to install it. When I did it, I followed [Option 2: Build the Docker Container from Xilinx Recipes](https://xilinx.github.io/Vitis-AI/3.5/html/docs/install/install.html#option-2-build-the-docker-container-from-xilinx-recipes).
+1. Build the container mentioned above ^^^.
+2. Start the Vitis-AI container: `sudo ./docker_run.sh xilinx/vitis-ai-tensorflow2-gpu:3.5.0.001-b2b227921`
+3. Run `catdog_inference.py` to verify that your environment is set up correctly (it should be).
+4. Walah!
