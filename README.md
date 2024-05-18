@@ -11,7 +11,7 @@ The goal of this project:
 
 There are several parts to this project:
 1. [Python code](https://github.com/jona1115/cats_dogs_acceleration/tree/main/python)
-2. [Vivado XSA and Petalinux build](https://github.com/jona1115/cats_dogs_acceleration/blob/main/vivadoTRD_and_Petalinux/README.md)
+2. [Vivado XSA and Petalinux build](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/vivadoTRD_and_Petalinux/README.md)
 3. VHDL IP (Coming soon...)
 4. Other coming soon...
 
