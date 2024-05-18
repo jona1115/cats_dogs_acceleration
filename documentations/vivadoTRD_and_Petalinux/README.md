@@ -135,7 +135,7 @@ To fix this, in Petalinux OS (i.e. not on your host machine where you build Peta
         (At this point if you `lsblk` again you should see the 2nd partition size become bigger)
     4. Now, you want to resize the filesystem: `sudo resize2fs /dev/mmcblk1p2`  
     5. Verify using `df -h` that `/dev/mmcblk1p2` is now bigger in size. Also, try writting to it again (`dnf update`), it shouldn't errored out anymore.
-- In Petalinux OS, one thing I find annoying is that pip is not in PATH, and you have to use pip3, I am too lazy to type one more character, so, to add it to PATH:  
+- In Petalinux OS, one thing I find annoying is that pip is not in PATH, and you have to use pip3, yes, I am too lazy to type one extra character, so, to add it to PATH:  
     1. `vi ~/.bashrc`
     2. Add this line: `export PATH=$PATH:/home/petalinux/.local/bin`
     3. `source ~/.bashrc`
