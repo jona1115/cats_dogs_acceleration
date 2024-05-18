@@ -9,11 +9,12 @@ Tested and worked with:
 
 <br>
 
-> First two parts of this tutorial is based on [this Hackster's Tutorial](https://www.hackster.io/shreyasnr/kv260-dpu-trd-petalinux-2022-1-vivado-flow-000c0b)
+> First two parts of this tutorial are based on [this Hackster's Tutorial](https://www.hackster.io/shreyasnr/kv260-dpu-trd-petalinux-2022-1-vivado-flow-000c0b)
 
 ***
 # DPU in Vivado
-1. Download the DPU TRD (To the best of my knowledge TRD just means it is an example project) [here](https://github.com/Xilinx/Vitis-AI/tree/3.0/dpu)
+Note: If you wish to skip this part, download the generated xsa file for the next step, it is with this README, a file called `top_wrapper.xsa`.
+1. Download the DPU TRD (To the best of my knowledge TRD means it is an example project) [here](https://github.com/Xilinx/Vitis-AI/tree/3.0/dpu)
 2. Follow the tutorial (step 1) and edit the following files      
     Edit trd_prj.tcl located at D:\SampleProjects\Vivado\DPU_TRD\DPUCZDX8G\prj\Vivado\scripts\trd_prj.tcl       
     ```
@@ -66,7 +67,7 @@ Tested and worked with:
         Select the required packages, Don't select vitis-ai-library-dbg.
     9. Build (took me 151 minutes): petalinux-build    
     10. Package: `petalinux-package --wic --images-dir images/linux/ --bootfiles "ramdisk.cpio.gz.u-boot,boot.scr,Image,system.dtb,system-zynqmp-sck-kv-g-revB.dtb" --disk-name "mmcblk1" --wic-extra-args "-c gzip"`
-2. Burn it (just use [Balena Etcher](https://etcher.balena.io/)) onto a SD card and you should be good to go!  
+2. Burn it (use [Balena Etcher](https://etcher.balena.io/)) onto an SD card, and you should be good to go!  
 <br>
 
 > Note: I skipped step 5 as IDK what that is doing  
@@ -80,7 +81,7 @@ Tested and worked with:
 Now this is important for easy GitHub push/pull.
 1. Run `petalinux-config -c rootfs`.
 2. Go into `Image Features` and deselect the dropbear version and select the openssh option. This will introduce some issues, follow these fix:
-    1. [Fix for build error because something repetalinquires dropbear](https://support.xilinx.com/s/question/0D54U00005WcRhqSAF/petalinux-20221-building-sdk-package-dropbear-conflicting-requests?language=en_US). Summary:  
+    1. [Fix for build error because something requires dropbear](https://support.xilinx.com/s/question/0D54U00005WcRhqSAF/petalinux-20221-building-sdk-package-dropbear-conflicting-requests?language=en_US). Summary:  
     Look for the file “packagegroup-petalinux-som.bb” in the yocto layers (petalinux_prj_dir/components/yocto/layers/meta-som/recipes-core/packagegroups). Replace `packagegroup-core-ssh-dropbear` by `packagegroup-core-ssh-openssh`.
     2. Deselect `Filesystem Packages -> misc -> package-group-core-ssh-dropbear` [as mentioned here](https://support.xilinx.com/s/question/0D52E00006sl3paSAA/petalinux-cannot-use-openssh-instead-of-dropbear?language=en_US). Summary:  
         1. `Filesystem Packages -> misc -> package-group-core-ssh-dropbear`
@@ -107,10 +108,8 @@ This is for using vaitrace
 ### Other important(-ish) stuff
 "ish" because these are probably stuff you can dnf install on the board later.
 - **pkgconfig**: Search for pkgconfig and select all of them.
-- (I didn't end up doing this because it was generating an error when packing) **Python stuff**: Go to `Filesystem Packages -> misc -> python3...` and I just selected all of them. (I also have a 128GB SD card so I can splurg)
+- (I didn't end up doing this because it was generating an error when packing) **Python stuff**: Go to `Filesystem Packages -> misc -> python3...` and I just selected all of them. (I also have a 128GB SD card, so I can splurge)
 - **Git**: Search for git and select all of them.
-
-Notes: for later: in `Filesystem packages -> console -> utils` there are `screen` and `sccren` and `vim` and `zip` and `unzip` that are worth looking into, honestly there are a lot of fun stuff like in `Filesystem packages -> devel` there are numpy stuff 
 
 ***
 # Troubleshooting
@@ -124,7 +123,7 @@ Notes: for later: in `Filesystem packages -> console -> utils` there are `screen
     IMAGE_FSTYPES:remove = "cpio cpio.gz cpio.bz2 cpio.xz cpio.lzma cpio.lz4 cpio.gz.u-boot"
     IMAGE_FSTYPES_DEBUGFS:remove = "cpio cpio.gz cpio.bz2 cpio.xz cpio.lzma cpio.lz4 cpio.gz.u-boot"
     ```
-- When booted Petalinux, for some reason, they will only allocate necessary space for the second partition, idk if this is Balena Etcher's fault or Petalinux tools but it is what it is. This will cause **errors when trying to write to the filesystem** when booted (like when you `dnf update`), and it will give you error that looks like:  
+- When booted Petalinux, for some reason, they will only allocate necessary space for the second partition. Idk if this is Balena Etcher's fault or Petalinux's tools, but it is what it is. This will cause **errors when trying to write to the filesystem** when booted (like when you `dnf update`), and it will give you an error that looks like:  
 `... [Failure writing output to destination] ...`  
 To fix this, in Petalinux OS (i.e. not on your host machine where you build Petalinux but on the BOOTED Petalinux OS), do these:  
     1. Check disk space: `df -h` (You want to see a size that is big, but you won't thats why it errored out)
