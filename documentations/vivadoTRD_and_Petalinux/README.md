@@ -39,11 +39,11 @@ Tested and worked with:
     1. `petalinux-create -t project -s <location-of-bsp-file>.bsp [--name <project name>]  ` 
     2. `cd` into the folder `petalinux-create` made.
     3. `petalinux-config --get-hw-description <location-of-xsa-file>`
-    4. `petalinux-config -c kernel`      
+    4. `petalinux-config -c kernel`
         ```
-            Device Drivers -->      
-            Misc devices -->        
-            <*> Xilinux Deep learning Processing Unit (DPU) Driver  
+        Device Drivers -->
+        Misc devices -->
+        <*> Xilinux Deep learning Processing Unit (DPU) Driver
         ```
     5. Copy stuff is in the TRD's project's /prj/Vivado/sw/meta-vitis (There should be four folders):   
         `recipes-apps, recipes-core, recipes-kernel, recipes-vitis-ai`    
