@@ -106,9 +106,9 @@ This is for using vaitrace
 
 ### Other important(-ish) stuff
 "ish" because these are probably stuff you can dnf install on the board later.
-- pkgconfig: Search for pkgconfig and select all of them.
-- (I didn't end up doing this because it was generating an error when packing) Python stuff: Go to `Filesystem Packages -> misc -> python3...` and I just selected all of them. (I also have a 128GB SD card so I can splurg)
-- Git: Search for git and select all of them.
+- **pkgconfig**: Search for pkgconfig and select all of them.
+- (I didn't end up doing this because it was generating an error when packing) **Python stuff**: Go to `Filesystem Packages -> misc -> python3...` and I just selected all of them. (I also have a 128GB SD card so I can splurg)
+- **Git**: Search for git and select all of them.
 
 Notes: for later: in `Filesystem packages -> console -> utils` there are `screen` and `sccren` and `vim` and `zip` and `unzip` that are worth looking into, honestly there are a lot of fun stuff like in `Filesystem packages -> devel` there are numpy stuff 
 
@@ -124,7 +124,7 @@ Notes: for later: in `Filesystem packages -> console -> utils` there are `screen
     IMAGE_FSTYPES:remove = "cpio cpio.gz cpio.bz2 cpio.xz cpio.lzma cpio.lz4 cpio.gz.u-boot"
     IMAGE_FSTYPES_DEBUGFS:remove = "cpio cpio.gz cpio.bz2 cpio.xz cpio.lzma cpio.lz4 cpio.gz.u-boot"
     ```
-- When booted Petalinux, for some reason, they will only allocate necessary space for the second partition, idk if this is Balena Etcher's fault or Petalinux tools but it is what it is. This will cause errors when trying to write to the filesystem when booted (like when you `dnf update`), and it will give you error that looks like:  
+- When booted Petalinux, for some reason, they will only allocate necessary space for the second partition, idk if this is Balena Etcher's fault or Petalinux tools but it is what it is. This will cause **errors when trying to write to the filesystem** when booted (like when you `dnf update`), and it will give you error that looks like:  
 `... [Failure writing output to destination] ...`  
 To fix this, in Petalinux OS (i.e. not on your host machine where you build Petalinux but on the BOOTED Petalinux OS), do these:  
     1. Check disk space: `df -h` (You want to see a size that is big, but you won't thats why it errored out)
@@ -135,7 +135,7 @@ To fix this, in Petalinux OS (i.e. not on your host machine where you build Peta
         (At this point if you `lsblk` again you should see the 2nd partition size become bigger)
     4. Now, you want to resize the filesystem: `sudo resize2fs /dev/mmcblk1p2`  
     5. Verify using `df -h` that `/dev/mmcblk1p2` is now bigger in size. Also, try writting to it again (`dnf update`), it shouldn't errored out anymore.
-- In Petalinux OS, one thing I find annoying is that pip is not in PATH, and you have to use pip3, yes, I am too lazy to type one extra character, so, to add it to PATH:  
+- In Petalinux OS, one thing I find annoying is that **pip is not in PATH**, and you have to use pip3, yes, I am too lazy to type one extra character, so, to add it to PATH:  
     1. `vi ~/.bashrc`
     2. Add this line: `export PATH=$PATH:/home/petalinux/.local/bin`
     3. `source ~/.bashrc`
