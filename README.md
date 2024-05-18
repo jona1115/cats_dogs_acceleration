@@ -3,11 +3,15 @@
 Hardware Accelerators for Machine Learning have always fascinated me. In this project, I want to try different things to accelerate an ML model. My model of choice is the [Kaggle Dogs vs Cats project](https://www.kaggle.com/c/dogs-vs-cats/data), I will try to make the inference faster using different techniques.
 
 The goal of this project:
-1. Obtain the model and create the Python inference code to run the inference.
-2. Pick a layer in the model and, write a C++ implementation of that layer, and use that code when running inference.
-3. Use VHDL to write an accelerator for that layer.
-4. Use [Tensil](https://www.tensil.ai/) to create custom HW accelerator for the model.
-5. Try turning the model into an xmodel and running it on my Kria board's DPU.
+1. Obtain the model and create the Python inference code to run the inference. (Done, you can find them in [python/])(https://github.com/jona1115/cats_dogs_acceleration/tree/main/python)
+2. Pick a layer in the model and, write a C++ implementation of that layer, and use that code when running inference. (Done, you can find them in [python/](https://github.com/jona1115/cats_dogs_acceleration/tree/main/python))
+3. Create a Petalinux build for running development environment. (Done, you can find the guide in [documentation/vivadoTRD_and_Petalinux/](https://github.com/jona1115/cats_dogs_acceleration/tree/main/documentations/vivadoTRD_and_Petalinux))
+4. Use VHDL to write an accelerator for that layer.
+5. Use [Tensil](https://www.tensil.ai/) to create custom HW accelerator for the model.
+6. Use Vitis HLS to create a custom accelerator for that layer.
+7. Turn the Tensorflow model into an xmodel and run it on my Kria board's DPU.
+
+> The layer I choose is `conv2d_24`, this layer has the most amount of parameters, and I suspect that it is the slowest layer.
 
 There are several parts to this project:
 1. [Python code](https://github.com/jona1115/cats_dogs_acceleration/tree/main/python)
