@@ -107,7 +107,7 @@ This is for using vaitrace
 ### Other important(-ish) stuff
 "ish" because these are probably stuff you can dnf install on the board later.
 - pkgconfig: Search for pkgconfig and select all of them.
-- Python stuff: Go to `Filesystem Packages -> misc -> python3...` and I just selected all of them. (I also have a 128GB SD card so I can splurg)
+- (I didn't end up doing this because it was generating an error when packing) Python stuff: Go to `Filesystem Packages -> misc -> python3...` and I just selected all of them. (I also have a 128GB SD card so I can splurg)
 - Git: Search for git and select all of them.
 
 Notes: for later: in `Filesystem packages -> console -> utils` there are `screen` and `sccren` and `vim` and `zip` and `unzip` that are worth looking into, honestly there are a lot of fun stuff like in `Filesystem packages -> devel` there are numpy stuff 
