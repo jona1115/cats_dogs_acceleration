@@ -3,7 +3,7 @@
 Hardware Accelerators for Machine Learning have always fascinated me. In this project, I want to try different things to accelerate an ML model. My model of choice is the [Kaggle Dogs vs Cats project](https://www.kaggle.com/c/dogs-vs-cats/data), I will try to make the inference faster using different techniques.
 
 The goal of this project:
-1. Obtain the model and create the Python inference code to run the inference. (Done, you can find them in [python/])(https://github.com/jona1115/cats_dogs_acceleration/tree/main/python)
+1. Obtain the model and create the Python inference code to run the inference. (Done, you can find them in [python/](https://github.com/jona1115/cats_dogs_acceleration/tree/main/python))
 2. Pick a layer in the model and, write a C++ implementation of that layer, and use that code when running inference. (Done, you can find them in [python/](https://github.com/jona1115/cats_dogs_acceleration/tree/main/python))
 3. Create a Petalinux build for running development environment. (Done, you can find the guide in [documentation/vivadoTRD_and_Petalinux/](https://github.com/jona1115/cats_dogs_acceleration/tree/main/documentations/vivadoTRD_and_Petalinux))
 4. Use VHDL to write an accelerator for that layer.
