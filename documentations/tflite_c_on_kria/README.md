@@ -1,4 +1,4 @@
-#### In this tutorial, I will guide you on how to compile Tensorflow Lite on the Kria board, this tutorial probably works with other Xilinx boards.
+#### In this tutorial, I will guide you on how to compile Tensorflow Lite (for C) on the Kria board, this tutorial probably works with other Xilinx boards.
 
 Tested and worked with:
 - Xilinx Kria KV260 Board
