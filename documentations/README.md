@@ -2,4 +2,5 @@ While working on this project, some parts weren't very straightforward, so I mad
 
 Table of contents:
 1. [Setting up Vivado HW and Petalinux OS](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/vivadoTRD_and_Petalinux/README.md)
-2. [Setting up TFLite on the Kria board](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/tflite_on_kria/README.md)
+2. [Setting up TFLite c on the Kria board](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/tflite_c_on_kria/README.md)
+3. [Setting up TFLite Python on the Kria board](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/tflite_python_on_kira/README.md)
