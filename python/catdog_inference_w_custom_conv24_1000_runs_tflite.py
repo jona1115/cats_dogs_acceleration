@@ -23,13 +23,12 @@ import ctypes
 import os
 import numpy as np
 from PIL import Image
-import tensorflow as tf
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.models import load_model, Model
+import tflite_runtime.interpreter as tflite
+from vaitrace_py import vai_tracepoint
 
 # Load the TensorFlow Lite model
 tflite_model_path = './build/float_model/f_model.tflite'
-interpreter = tf.lite.Interpreter(model_path=tflite_model_path)
+interpreter = tflite.Interpreter(model_path=tflite_model_path)
 interpreter.allocate_tensors()
 
 # Get input and output tensors
@@ -80,20 +79,31 @@ def conv2d_24_cpp(input_tensor, weights, bias):
 
     return output_data.reshape((outputHeight, outputWidth, channelsOut))
 
+@vai_tracepoint
 def load_and_prepare_image(image_path, target_size=(250, 200)):
     img = Image.open(image_path)
     img = img.resize(target_size)
-    img_array = image.img_to_array(img)
-    img_array = np.expand_dims(img_array, axis=0)
-    img_array /= 255.0
+    img_array = np.array(img).astype('float32') / 255.0  # Normalize to [0,1]
+    img_array = np.expand_dims(img_array, axis=0)  # Make 'batch' of 1
     return img_array
 
-def run_inference_with_custom_layer(image_path, model_up_to_conv2d_23, model_after_conv2d_24, weights, biases):
+def run_inference_with_custom_layer(image_path, interpreter, weights, biases):
     input_data = load_and_prepare_image(image_path)
-    input_tensor = model_up_to_conv2d_23.predict(input_data)
-    output_from_cpp = conv2d_24_cpp(input_tensor, weights, biases)
+
+    # Run up to the conv2d_23 layer
+    interpreter.set_tensor(input_details[0]['index'], input_data)
+    interpreter.invoke()
+    intermediate_output = interpreter.get_tensor(interpreter.get_output_details()[0]['index'])
+
+    # Process conv2d_24 with custom C++ library
+    output_from_cpp = conv2d_24_cpp(intermediate_output, weights, biases)
     output_from_cpp = output_from_cpp.reshape((1, 7, 8, 128))
-    final_output = model_after_conv2d_24.predict(output_from_cpp)
+
+    # Set the output of the custom layer as input to the next stage in the model
+    interpreter.set_tensor(input_details[0]['index'], output_from_cpp)
+    interpreter.invoke()
+    final_output = interpreter.get_tensor(output_details[0]['index'])
+
     return final_output
 
 def run_full_inference_tflite(image_path):
@@ -104,14 +114,9 @@ def run_full_inference_tflite(image_path):
     return predictions
 
 # Example usage
-model_path = './build/float_model/f_model.h5'
-model = load_model(model_path)
-
-model_up_to_conv2d_23 = Model(inputs=model.input, outputs=model.get_layer('conv2d_23').output)
-model_after_conv2d_24 = Model(inputs=model.get_layer('conv2d_24').output, outputs=model.output)
-
-conv2d_24_layer = model.get_layer('conv2d_24')
-weights, biases = conv2d_24_layer.get_weights()
+# Note: You will need to manually extract and handle the weights and biases for conv2d_24 layer from your TensorFlow model beforehand.
+weights = np.load('weights_conv2d_24.npy')  # Assuming weights are saved in a NumPy array
+biases = np.load('biases_conv2d_24.npy')    # Assuming biases are saved in a NumPy array
 
 image_dir = './build/dataset/test/'
 
@@ -126,8 +131,7 @@ for filename in os.listdir(image_dir):
         print(f"Running inference on {filename} ({counter})...")
 
         start_time = time.time()
-        final_output_with_custom_layer = run_inference_with_custom_layer(
-            file_path, model_up_to_conv2d_23, model_after_conv2d_24, weights, biases)
+        final_output_with_custom_layer = run_inference_with_custom_layer(file_path, interpreter, weights, biases)
         end_time = time.time()
         total_inference_time_with_custom_layer_s += end_time - start_time
 
