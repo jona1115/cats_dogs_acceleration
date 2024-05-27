@@ -23,13 +23,13 @@ import ctypes
 import os
 import numpy as np
 from PIL import Image
-import tensorflow as tf
-from tensorflow.keras.preprocessing import image
-from tensorflow.keras.models import load_model, Model
+import tflite_runtime.interpreter as tflite
+# from tensorflow.keras.preprocessing import image
+# from tensorflow.keras.models import load_model, Model
 
 # Load the TensorFlow Lite model
 tflite_model_path = './build/float_model/f_model.tflite'
-interpreter = tf.lite.Interpreter(model_path=tflite_model_path)
+interpreter = tflite.Interpreter(model_path=tflite_model_path)
 interpreter.allocate_tensors()
 
 # Get input and output tensors

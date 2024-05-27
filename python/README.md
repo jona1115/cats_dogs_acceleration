@@ -10,6 +10,7 @@ Important files (aka files I made):
 - utils.h
 - catdog_inference_w_custom_conv24_1000_runs.py
 - catdog_inference_w_custom_conv24_1000_runs_tflite.py
+- catdog_inference_tflite.py
 
 Note:
 - This is a continuation of the [Kaggle Dogs vs Cats project](https://www.kaggle.com/c/dogs-vs-cats/data).
