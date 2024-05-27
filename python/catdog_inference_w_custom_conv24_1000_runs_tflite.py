@@ -52,7 +52,11 @@ cpp_lib.run_conv2d_24.argtypes = [
 ]
 
 def conv2d_24_cpp(input_tensor, weights, bias):
-    input_data = np.squeeze(input_tensor, axis=0).astype(np.float32)
+    input_data = input_tensor.astype(np.float32)
+    if len(input_data.shape) != 3:
+        raise ValueError(f"Expected input_data to have 3 dimensions (height, width, channels), got {len(input_data.shape)} dimensions.")
+    
+    height, width, channels = input_data.shape
     weights_flat = weights.flatten().astype(np.float32)
     bias_flat = bias.flatten().astype(np.float32)
     input_size = input_data.size
@@ -63,8 +67,6 @@ def conv2d_24_cpp(input_tensor, weights, bias):
     channelsOut = 128
     output_size = outputHeight * outputWidth * channelsOut
     output_data = np.zeros(output_size, dtype=np.float32)
-
-    height, width, channels = input_data.shape
 
     cpp_lib.run_conv2d_24(
         input_data, input_size,
@@ -90,10 +92,21 @@ def load_and_prepare_image(image_path, target_size=(250, 200)):
 def run_inference_with_custom_layer(image_path, interpreter, weights, biases):
     input_data = load_and_prepare_image(image_path)
 
-    # Run up to the conv2d_23 layer
+    # Set input tensor
     interpreter.set_tensor(input_details[0]['index'], input_data)
     interpreter.invoke()
-    intermediate_output = interpreter.get_tensor(interpreter.get_output_details()[0]['index'])
+
+    # Get intermediate output from the layer before conv2d_24 (assuming it's index 91)
+    intermediate_output = interpreter.get_tensor(91)
+
+    # Debugging: Check the shape of the intermediate output
+    print(f"Intermediate output shape: {intermediate_output.shape}")
+
+    if len(intermediate_output.shape) != 4:
+        raise ValueError(f"Expected intermediate_output to have 4 dimensions (batch, height, width, channels), got {len(intermediate_output.shape)} dimensions.")
+
+    # Remove the batch dimension
+    intermediate_output = np.squeeze(intermediate_output, axis=0)
 
     # Process conv2d_24 with custom C++ library
     output_from_cpp = conv2d_24_cpp(intermediate_output, weights, biases)

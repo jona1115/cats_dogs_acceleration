@@ -5,7 +5,7 @@
 #  
 ###########################################################################################
 #  
-#  @file catdog_inference.py
+#  @file catdog_inference_tflite.py
 #  @comments This file is written by, or with the help of, ChatGPT.
 #  
 #  MODIFICATION HISTORY:
