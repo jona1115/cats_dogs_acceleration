@@ -112,6 +112,7 @@ This is for using vaitrace
 - **Git**: Search for git and select all of them.
 - This is more of a quality of life thing, to make the bash colorful, add this line to the back of `~/.bashrc`:  
   `PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '`
+- Tensorflow Lite: Checkout my [tflite on Kria guide](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/tflite_on_kria/README.md).
 
 ***
 # Troubleshooting
