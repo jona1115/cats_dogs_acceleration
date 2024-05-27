@@ -7,6 +7,8 @@ Tested and worked with:
 
 > This tutorial is based on [this tutorial](https://qengineering.eu/install-tensorflow-2-lite-on-raspberry-64-os.html), with some modifications to work on Xilinx's boards
 
+<br>
+
 Summary (step 7 is different from the original tutorial):
 1. This should already be installed but just in case: `sudo dnf install cmake curl`
 2. Download the tflite source: `wget -O tensorflow.zip https://github.com/tensorflow/tensorflow/archive/v2.6.0.zip`
