@@ -1,4 +1,4 @@
-This Tutorial will guide you on how to set up the DPU IP, and Petalinux system for development, including some important troubleshooting tips.
+#### This Tutorial will guide you on how to set up the DPU IP, and Petalinux system for development, including some important troubleshooting tips.
 
 Tested and worked with:
 - Petalinux v2022.2
