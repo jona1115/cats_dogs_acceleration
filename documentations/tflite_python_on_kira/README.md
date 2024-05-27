@@ -1,0 +1,1 @@
+To install TF Lite runtime for ARM (Kria) you can just run: `python3 -m pip install tflite-runtime` on the board [as shown here](https://www.tensorflow.org/lite/guide/python#install_tensorflow_lite_for_python)
