@@ -28,7 +28,7 @@ Summary (step 7 is different from the original tutorial):
     5. `mkdir build`
     6. `cd build`
     7. `cmake ..`
-    8. `make -j4`.
+    8. `make -j4`
     9. `sudo make install`
     10. `sudo ldconfig`
 10. When done you should have:  
