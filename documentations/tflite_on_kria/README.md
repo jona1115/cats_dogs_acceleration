@@ -26,7 +26,7 @@ Summary (step 7 is different from the original tutorial):
     3. Get the non-problematic version: `git clone -b v2.0.0 --depth=1 --recursive https://github.com/google/flatbuffers.git`
     4. `cd flatbuffers`
     5. `mkdir build`
-    6. cd `build`
+    6. `cd build`
     7. `cmake ..`
     8. `make -j4`.
     9. `sudo make install`
