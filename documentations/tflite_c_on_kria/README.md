@@ -9,7 +9,7 @@ Tested and worked with:
 
 <br>
 
-Summary (step 7 is different from the original tutorial):
+Summary (Important: step 6 is different from the original tutorial):
 1. This should already be installed but just in case: `sudo dnf install cmake curl`
 2. Download the tflite source: `wget -O tensorflow.zip https://github.com/tensorflow/tensorflow/archive/v2.6.0.zip`
 3. Unzip: `unzip tensorflow.zip`
