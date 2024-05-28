@@ -1,7 +1,6 @@
 import time
 import ctypes
 import os
-
 import numpy as np
 from PIL import Image
 from tflite_runtime.interpreter import Interpreter
@@ -43,7 +42,7 @@ cpp_lib.run_conv2d_24.argtypes = [
 def conv2d_24_cpp(input_tensor, weights, bias):
     input_data = np.squeeze(input_tensor, axis=0).astype(np.float32)
     print(f"Input data shape (after squeeze): {input_data.shape}")
-    
+
     weights_flat = weights.flatten().astype(np.float32)
     bias_flat = bias.flatten().astype(np.float32)
 
@@ -104,7 +103,6 @@ for filename in os.listdir(image_dir):
 
         start_time = time.time()
 
-        # Load weights and biases for conv2d_24
         weights = np.load('./weights_conv2d_24.npy')
         biases = np.load('./biases_conv2d_24.npy')
 
@@ -117,12 +115,16 @@ for filename in os.listdir(image_dir):
         output_from_cpp = conv2d_24_cpp(intermediate_output, weights, biases)
         print(f"Output from C++ shape: {output_from_cpp.shape}")
 
+        # Run inference after conv2d_24 using the second part of the model
         interpreter_after_conv2d_24.set_tensor(input_details_after_conv2d_24[0]['index'], output_from_cpp)
         interpreter_after_conv2d_24.invoke()
         final_output = interpreter_after_conv2d_24.get_tensor(output_details_after_conv2d_24[0]['index'])
 
         end_time = time.time()
         total_inference_time_with_custom_layer_s += end_time - start_time
+
+        # Print the final output which should be the class probabilities
+        print("Final predictions with custom layer:", final_output)
 
         start_time = time.time()
         interpreter_up_to_conv2d_23.set_tensor(input_details_up_to_conv2d_23[0]['index'], input_data)
