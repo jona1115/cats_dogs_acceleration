@@ -4,7 +4,7 @@ Tested and worked with:
 - Xilinx Kria KV260 Board
 - gcc version 11.2.0 (GCC)
 - [Tensorflow Lite 2.6.0 for ARM](https://github.com/jona1115/cats_dogs_acceleration/edit/main/documentations/tflite_c_on_kria/README.md#tflite-260-arm-possibly-x86-too-but-i-didnt-try)
-- Tensorflow Lite 2.16.1 for x86 Linux
+- [Tensorflow Lite 2.16.1 for x86 Linux](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/tflite_c_on_kria/README.md#tflite-2160-x86-linux)
 - Tensorflow Lite 2.16.1 for ARM (Haven't try yet)
 
 > This tutorial is based on [this tutorial](https://qengineering.eu/install-tensorflow-2-lite-on-raspberry-64-os.html), with some modifications to work on Xilinx's boards
