@@ -7,7 +7,7 @@ Tested and worked with:
 
 > This tutorial is based on [this tutorial](https://qengineering.eu/install-tensorflow-2-lite-on-raspberry-64-os.html), with some modifications to work on Xilinx's boards
 
-> The current TFLite version is 2.16, which you find the [download link here](https://github.com/tensorflow/tensorflow/releases/tag/v2.16.1). However, I still haven't found a good way to install it on the board.
+> The current (as of 5/27/2024) TFLite version is 2.16, which you find the [download link here](https://github.com/tensorflow/tensorflow/releases/tag/v2.16.1). However, I still haven't found a good way to install it on the board.
 
 <br>
 
