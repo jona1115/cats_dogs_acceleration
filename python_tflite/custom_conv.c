@@ -1,7 +1,7 @@
 // custom_conv.c
-// #include "tensorflow/lite/c/common.h"
-#include "/home/petalinux/tensorflow/tensorflow/lite/c/common.h"
-#include "/home/petalinux/tensorflow/tensorflow/lite/c/c_api_internal.h"
+#include "tensorflow/lite/c/common.h"
+// #include "/home/petalinux/tensorflow/tensorflow/lite/c/common.h"
+// #include "/home/petalinux/tensorflow/tensorflow/lite/c/c_api_internal.h"
 
 #include <cstring>
 #include <cstdlib>
