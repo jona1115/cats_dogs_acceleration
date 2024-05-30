@@ -1,1 +1,2 @@
+# I ran yocto in this directory thats why I need to gitignore it
 poky/
