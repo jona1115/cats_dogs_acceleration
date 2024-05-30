@@ -22,7 +22,9 @@ Tested and worked with:
     1. `mkdir tflite_build`
     2. `cd tflite_build`
     3. `cmake ../tensorflow/lite`, note: If you need special builds (like debug build, etc.), go to the tutorial and check out the flags you need.
+    4. TODO: Actually compile?
 6. I like to copy the `tensorflow` folder (not only its contents but the entire folder) into `/usr/local/include`. This will make linking c/c++ code later easier.
+7. TODO: Incomplete need to copy .so or .a to /usr/local/lib and stuff like that.
 
 # TFLite 2.6.0 ARM (Possibly x86 too, but I didn't try)
 1. This should already be installed, but just in case: `sudo dnf install cmake curl`
@@ -35,7 +37,7 @@ Tested and worked with:
     2. In the last line (`make ...`), change the `TARGET` from `TARGET=aarch64` to `Target=aarch64-xilinx` (basically append a `-xilinx`).
 7. Run the script: `./tensorflow/lite/tools/make/build_aarch64_lib.sh` (Takes a while ~15 min)
 8. Now we need to build this flatbuffer thingy:  
-    1. Go to the folder: `cd ~/tensorflow/tensorflow/lite/tools/make/downloads`
+    1. Go to the folder: `cd ~/tensorflow-2.6.0/tensorflow/lite/tools/make/downloads`
     2. Remove the problematic flatbuffer: `rm -rf flatbuffers`
     3. Get the non-problematic version: `git clone -b v2.0.0 --depth=1 --recursive https://github.com/google/flatbuffers.git`
     4. `cd flatbuffers`
