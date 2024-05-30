@@ -14,6 +14,7 @@ Tested and worked with:
 <br>
 
 # Cross compile TFLite 2.16.0 ARM on Ubuntu Host
+> Skip to step 3 if you don't want to compile yourself.
 1. Install Bazel 6.5.0:
     1. Follow [step 1](https://bazel.build/install/ubuntu#add-dis-uri):
        ```
@@ -24,6 +25,7 @@ Tested and worked with:
        ```
     2. `sudo apt install bazel-6.5.0` (It should install properly, if not, do like a `sudo apt update && sudo apt full-upgrade` or something like that)
 2. Follow [this to build ARM Binary](https://www.tensorflow.org/lite/guide/build_arm#c_library): `bazel build --config=elinux_aarch64 -c opt //tensorflow/lite/c:libtensorflowlite_c.so`, the resulting `.so` file should be in `bazel-bin/tensorflow/lite/libtensorflowlite.so`. Which you can then SCP to the board or something.
+3. The generated `libtensorflowlite_c.so` is included with this README.
 
 # TFLite 2.16.0 x86 Linux (incomplete)
 1. Make sure you have CMake installed
