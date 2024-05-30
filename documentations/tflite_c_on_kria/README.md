@@ -13,7 +13,19 @@ Tested and worked with:
 
 <br>
 
-# TFLite 2.16.0 x86 Linux
+# Cross compile TFLite 2.16.0 ARM on Ubuntu Host
+1. Install Bazel 6.5.0:
+    1. Follow [step 1](https://bazel.build/install/ubuntu#add-dis-uri):
+       ```
+       sudo apt install apt-transport-https curl gnupg -y
+       curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor >bazel-archive-keyring.gpg
+       sudo mv bazel-archive-keyring.gpg /usr/share/keyrings
+       echo "deb [arch=amd64 signed-by=/usr/share/keyrings/bazel-archive-keyring.gpg] https://storage.googleapis.com/bazel-apt stable jdk1.8" | sudo tee /etc/apt/sources.list.d/bazel.list
+       ```
+    2. `sudo apt install bazel-6.5.0` (It should install properly, if not, do like a `sudo apt update && sudo apt full-upgrade` or something like that)
+2. Follow [this to build ARM Binary](https://www.tensorflow.org/lite/guide/build_arm#c_library): `bazel build --config=elinux_aarch64 -c opt //tensorflow/lite/c:libtensorflowlite_c.so`, the resulting `.so` file should be in `bazel-bin/tensorflow/lite/libtensorflowlite.so`. Which you can then SCP to the board or something.
+
+# TFLite 2.16.0 x86 Linux (incomplete)
 1. Make sure you have CMake installed
 2. Download the tflite source: `wget -O tensorflow.zip https://github.com/tensorflow/tensorflow/archive/refs/tags/v2.16.1.zip`
 3. Unzip: `unzip tensorflow.zip`
@@ -22,7 +34,7 @@ Tested and worked with:
     1. `mkdir tflite_build`
     2. `cd tflite_build`
     3. `cmake ../tensorflow/lite`, note: If you need special builds (like debug build, etc.), go to the tutorial and check out the flags you need.
-    4. TODO: Actually compile?
+    4. Compile it: `cmake --build . -j` (I never get it to compile correctly and I just gave up and used the Bazel method instead)
 6. I like to copy the `tensorflow` folder (not only its contents but the entire folder) into `/usr/local/include`. This will make linking c/c++ code later easier.
 7. TODO: Incomplete need to copy .so or .a to /usr/local/lib and stuff like that.
 
@@ -53,4 +65,4 @@ Tested and worked with:
     3. There will be a `libflatbuffers.a` in `/usr/local/lib64`
     4. There will be a `flatbuffers` folder in `/usr/local/include`
 10. At this point you are free to delete the zip from step 2.
-11. I like to copy the `tensorflow` folder (not only its contents but the entire folder) into `/usr/local/include`. This will make linking c/c++ code later easier.
+11. TODO COPY BINARY FILE TO SOMEWHERE TOO I like to copy the `tensorflow` folder (not only its contents but the entire folder) into `/usr/local/include`. This will make linking c/c++ code later easier.
