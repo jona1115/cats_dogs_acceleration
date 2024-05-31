@@ -51,3 +51,7 @@ Pre-req: This tutorial is in series, so you should already did "Building A Basic
 3. We also want to change the machine to aarch64:  
     1. When in build-aarch64/: `nano conf/local.conf`
     2. Uncomment the line `#MACHINE ?= "qemuarm64"`.
+4. Add the meta-openembedded layers(?), IDK if you really need it (I will think so?), I just included them anyway, which are the commands in step 4 in the above section "Building A Basic Rasp Pi Project".
+5. Build: `bitbake core-image-base` (The decision to choose core-image-base is somewhat arbitrary). Protip: To search for all files starting with "core" but exclude search in the build folders, you can run `find . -type d -name "build*" -prune -o -name "core-*" -print`
+6. Run the emulator: `runqemu qemuarm64 nographic`
+7. You probably will notice at this point, this is the barest of bare Linux, THERE IS NOTHING! You can't even sudo.
