@@ -40,10 +40,14 @@ Pre-req: You did "Building A Basic x86-64 Project"
         ```
     3. Add `ENABLE_UART = "1"` to the end of this file because the tutorial said so, but I don't think is necessary if you are emulating.
 7. IMPORTANT (Not in tutorial): Aparently there is some weird stuff about licensing and crap regarding rpi, anyway, follow [this link](https://meta-raspberrypi.readthedocs.io/en/latest/ipcompliance.html#linux-firmware-rpidistro) and add `LICENSE_FLAGS_ACCEPTED = "synaptics-killswitch"` to the end of `build-rpi/conf/local.conf`.
-8. Build: `cd build-rpi` and then `bitbake rpi-test-image`
+8. Build (~75Min): `cd build-rpi` and then `bitbake rpi-test-image`
 
 ### Building A Basic AARCH64 Project
 > Finally, let's build a basic aarch64 project because that aligns with the parent project (Cats and Dogs on Kria) better. Let's shoot to make this bootable on the [TI SK-AM62B-P1](https://www.ti.com/tool/SK-AM62B-P1). Which has a quad-core 64-bit Arm®-Cortex®-A53 microprocessor and single-core Arm Cortex-M4F MCU
 
 Pre-req: This tutorial is in series, so you should already did "Building A Basic x86-64 Project", and "Building A Basic Rasp Pi Project".  
-1. 
+1. Remove the raspberry pi layer: `bitbake-layers remove-layer ./meta-raspberrypi/`, you can run `bitbake-layers show-layers` before and after for sanity check.
+2. Create new build directory: `source oe-init-build-env build-aarch64`
+3. We also want to change the machine to aarch64:  
+    1. When in build-aarch64/: `nano conf/local.conf`
+    2. Uncomment the line `#MACHINE ?= "qemuarm64"`.
