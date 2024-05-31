@@ -101,6 +101,35 @@ Now this is important for easy GitHub push/pull.
 
 > Tip: When you search, options will have numbers next to them "(1)", "(2)", etc. To select them, type the number and you will teleport to that part of the menu.
 
+### Java
+> Details on adding layers and recipes can be found [here](https://docs.amd.com/r/2022.2-English/ug1144-petalinux-tools-reference-guide/Adding-Layers). Below I will show how to add specifically Java.
+1. Find somewhere you want the layer to go, for Petalinux, usually, it goes in `<plnc project>/project-spec/meta-user`, so cd there, and run: `git clone https://github.com/meta-java/meta-java.git -b honister` (honister is the Yocto version Petalinux v2022.2 comes with, and all meta- stuff needs to match that).
+2. Run `petalinux-config` and go to Yocto Settings --> User Layers -> () User Layer x --> Type in the location of the meta-java folder, e.g. `${PROOT}/project-spec/meta-user/meta-java`. Save.
+3. Figure out what the recipes are called for meta-java, you can do a find (in project root run: `find . -name "openjdk*.bb"`). Recipes all end with `.bb` so it makes searching easy. Also, the recipes' naming convention is `recipename_version.bb`. Once you find them, open up `<plnx-proj-root>/project-spec/meta-user/conf/user-rootfsconfig`, and add "CONFIG_" += the recipe name to the file, for example,
+    My search result was:
+    ```
+    jonathan@ubuntu4haml:~/cats_and_dogs/kria_cats_and_dogs $ find . -name "openjdk*.bb"
+    ./project-spec/meta-user/meta-catsdogs/meta-java/recipes-core/openjdk/openjdk-8_272.bb
+    ./project-spec/meta-user/meta-catsdogs/meta-java/recipes-core/openjdk/openjdk-7_99b00-2.6.5.bb
+    ./project-spec/meta-user/meta-catsdogs/meta-java/recipes-core/openjdk/openjdk-8-native_272.bb
+    ./project-spec/meta-user/meta-catsdogs/meta-java/recipes-images/images/openjdk-8-test-image.bb
+    ./project-spec/meta-user/meta-catsdogs/meta-java/recipes-images/images/openjdk-7-test-image.bb
+    ```
+    The ones in the recipes-images folder isn't actually recipes (to the best of my knowledge). We are more concerned with the ones in recipes-core, so, we add these to the user-rootfsconfig file:
+    ```
+    CONFIG_openjdk-8
+    CONFIG_openjdk-7
+    CONFIG_openjdk-8-native
+    CONFIG_openjre-8
+    ```
+4. Go to `petalinux-config -c rootfs` --> user packages --> and select the ones you want. In our case, we select only the openjdk-8. Note: Notice how the name of openjdk-7 is a bit weird, don't ever select that, that is probably a bug on the meta-java end.
+5. There is one more bug on the meta-java end, as per [this post](https://github.com/meta-java/meta-java/issues/10), the URL in the recipe is wrong. Hence, if you `petalinux-build` you will get a do_fetch error. To fix it, cd into `/project-spec/meta-user/meta-catsdogs/meta-java/recipes-core/xerces-j`, edit the file `xerces-j_2.11.0.bb`, in the URI part comment out the original line and change it to:
+    ```
+    # SRC_URI = "http://archive.apache.org/dist/xerces/j/Xerces-J-src.${PV}.tar.gz"
+    SRC_URI = "http://ftp.deu.edu.tr/pub/Infosystem/Apache/xerces/j/source/Xerces-J-src.${PV}.tar.gz"
+    ```
+6. Now, build.
+
 ### Kernel Tracers
 This is for using vaitrace
 1. Follow: https://docs.amd.com/r/en-US/ug1414-vitis-ai/Installing-the-Vitis-AI-Profiler
