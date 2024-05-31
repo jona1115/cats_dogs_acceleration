@@ -142,3 +142,4 @@ To fix this, in Petalinux OS (i.e. not on your host machine where you build Peta
     1. `vi ~/.bashrc`
     2. Add this line: `export PATH=$PATH:/home/petalinux/.local/bin`
     3. `source ~/.bashrc`
+- If you add too much stuff, the default 2nd partition might not be big enough because it is, by default, limited to 4G. This will cause packagging issue when running `petalinux-package --wic ...`. To increase the second partition size for the wic file, in to `<plnx project>/build/rooft.wks`, change `part / --source rootfs --ondisk mmcblk1 --fstype=ext4 --label root --align 4 --fixed-size 4G` to `part / --source rootfs --ondisk mmcblk1 --fstype=ext4 --label root --align 4 --fixed-size 10G` (4G to 10G for at the very last argument). Now you can add more stuff and package using wic.
