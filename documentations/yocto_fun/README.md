@@ -55,3 +55,5 @@ Pre-req: This tutorial is in series, so you should already did "Building A Basic
 5. Build: `bitbake core-image-base` (The decision to choose core-image-base is somewhat arbitrary). Protip: To search for all files starting with "core" but exclude search in the build folders, you can run `find . -type d -name "build*" -prune -o -name "core-*" -print`
 6. Run the emulator: `runqemu qemuarm64 nographic`
 7. You probably will notice at this point, this is the barest of bare Linux, THERE IS NOTHING! You can't even sudo.
+
+> Pro-tip: To see the size of folders in linux, you can use: `du -sh * | sort -h`
