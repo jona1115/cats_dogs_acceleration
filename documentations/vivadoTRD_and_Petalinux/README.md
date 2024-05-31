@@ -171,4 +171,9 @@ To fix this, in Petalinux OS (i.e. not on your host machine where you build Peta
     1. `vi ~/.bashrc`
     2. Add this line: `export PATH=$PATH:/home/petalinux/.local/bin`
     3. `source ~/.bashrc`
-- If you add too much stuff, the default 2nd partition might not be big enough because it is, by default, limited to 4G. This will cause packagging issue when running `petalinux-package --wic ...`. To increase the second partition size for the wic file, in to `<plnx project>/build/rooft.wks`, change `part / --source rootfs --ondisk mmcblk1 --fstype=ext4 --label root --align 4 --fixed-size 4G` to `part / --source rootfs --ondisk mmcblk1 --fstype=ext4 --label root --align 4 --fixed-size 10G` (4G to 10G for at the very last argument). Now you can add more stuff and package using wic. See more [here](https://docs.amd.com/r/2022.2-English/ug1144-petalinux-tools-reference-guide/petalinux-package-wic-Command-Examples).
+- If you add too much stuff, the default 2nd partition might not be big enough because it is, by default, limited to 4G. This will cause packagging issue when running `petalinux-package --wic ...`. To increase the second partition size for the wic file, in to `<plnx project>/build/rooft.wks`
+    1. Change `part / --source rootfs --ondisk mmcblk1 --fstype=ext4 --label root --align 4 --fixed-size 4G` to `part / --source rootfs --ondisk mmcblk1 --fstype=ext4 --label root --align 4 --fixed-size 10G` (4G to 10G for at the very last argument).
+    2. Run the package command but include the newly modified, .wks file: `petalinux-package --wic --images-dir images/linux/ --bootfiles "ramdisk.cpio.gz.u-boot,boot.scr,Image,system.dtb,system-zynqmp-sck-kv-g-revB.dtb" --disk-name "mmcblk1" --wic-extra-args "-c gzip" --wks build/rootfs.wks`
+    3. Now you can add more stuff and package using wic.
+    4. See more [here](https://docs.amd.com/r/2022.2-English/ug1144-petalinux-tools-reference-guide/petalinux-package-wic-Command-Examples).
+    5. This works, but I feel like the build/rootfs.wks we are modifying gets overwritten by something else sometimes, so you could also create another wks file and use that to be safe.
