@@ -13,7 +13,7 @@ Tested and worked with:
 
 <br>
 
-# Cross compile TFLite 2.16.0 ARM on Ubuntu Host
+# Cross compile TFLite 2.16.0 for ARM on Ubuntu Host
 > Skip to step 3 if you don't want to compile yourself.
 1. Install Bazel 6.5.0:
     1. Follow [step 1](https://bazel.build/install/ubuntu#add-dis-uri):
