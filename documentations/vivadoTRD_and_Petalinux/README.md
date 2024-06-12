@@ -137,7 +137,7 @@ This is for using vaitrace
 ### Other important(-ish) stuff
 "ish" because these are probably stuff you can dnf install on the board later.
 - **pkgconfig**: Search for pkgconfig and select all of them.
-- (I didn't end up doing this because it was generating an error when packing) **Python stuff**: Go to `Filesystem Packages -> misc -> python3...` and I just selected all of them. (I also have a 128GB SD card, so I can splurge)
+- **Python stuff**: Go to `Filesystem Packages -> misc -> python3...` and I just selected all of them. (I also have a 128GB SD card, so I can splurge)
 - **Git**: Search for git and select all of them.
 - This is more of a quality of life thing, to make the bash colorful, add this line to the back of `~/.bashrc`:  
   `PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '`
@@ -167,6 +167,7 @@ To fix this, in Petalinux OS (i.e. not on your host machine where you build Peta
         (At this point if you `lsblk` again you should see the 2nd partition size become bigger)
     4. Now, you want to resize the filesystem: `sudo resize2fs /dev/mmcblk1p2`  
     5. Verify using `df -h` that `/dev/mmcblk1p2` is now bigger in size. Also, try writting to it again (`dnf update`), it shouldn't errored out anymore.
+    6. A more permanent, root cause, fix is in the next next troubleshoot tips.
 - In Petalinux OS, one thing I find annoying is that **pip is not in PATH**, and you have to use pip3, yes, I am too lazy to type one extra character, so, to add it to PATH:  
     1. `vi ~/.bashrc`
     2. Add this line: `export PATH=$PATH:/home/petalinux/.local/bin`
