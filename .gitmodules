@@ -1,0 +1,3 @@
+[submodule "cats_dogs_acceleration_petalinux"]
+	path = cats_dogs_acceleration_petalinux
+	url = git@github.com:jona1115/cats_dogs_acceleration_petalinux.git
