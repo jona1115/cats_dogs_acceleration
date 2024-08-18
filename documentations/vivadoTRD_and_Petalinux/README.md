@@ -160,6 +160,7 @@ This is for using vaitrace
     IMAGE_FSTYPES:remove = "cpio cpio.gz cpio.bz2 cpio.xz cpio.lzma cpio.lz4 cpio.gz.u-boot"
     IMAGE_FSTYPES_DEBUGFS:remove = "cpio cpio.gz cpio.bz2 cpio.xz cpio.lzma cpio.lz4 cpio.gz.u-boot"
     ```
+    Note: After doing this, `ramdisk.cpio.gz.u-boot` will not be generated. So, you need to use this command for packaging: `petalinux-package --wic --images-dir images/linux/ --bootfiles "boot.scr,Image,system.dtb,system-zynqmp-sck-kv-g-revB.dtb" --disk-name "mmcblk1" --wic-extra-args "-c gzip" --wks build/rootfs.wks`
 - When booted Petalinux, for some reason, they will only allocate necessary space for the second partition. Idk if this is Balena Etcher's fault or Petalinux's tools, but it is what it is. This will cause **errors when trying to write to the filesystem** when booted (like when you `dnf update`), and it will give you an error that looks like:  
 `... [Failure writing output to destination] ...`  
 To fix this, in Petalinux OS (i.e. not on your host machine where you build Petalinux but on the BOOTED Petalinux OS), do these:  
