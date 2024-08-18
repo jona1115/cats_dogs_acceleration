@@ -9,7 +9,11 @@ Tested and worked with:
 
 <br>
 
-> First two parts of this tutorial are based on [this Hackster's Tutorial](https://www.hackster.io/shreyasnr/kv260-dpu-trd-petalinux-2022-1-vivado-flow-000c0b)
+> **Important**: If you clone the Petalinux repo, you don't have to follow this page. However, this page contains so useful debugging tips.
+
+<br>
+
+> The first two parts of this tutorial are based on [this Hackster's Tutorial](https://www.hackster.io/shreyasnr/kv260-dpu-trd-petalinux-2022-1-vivado-flow-000c0b)
 
 ***
 # DPU in Vivado
@@ -65,7 +69,7 @@ Note: If you wish to skip this part, download the generated xsa file for the nex
         Note: Idk what dpu-sw-optimize is so I skipped it       
     8. Run `petalinux-config -c rootfs`
         Select the required packages, Don't select vitis-ai-library-dbg.
-    9. Build (took me 151 minutes): petalinux-build    
+    9. Build (took me 151 minutes): `petalinux-build`    
     10. Package: `petalinux-package --wic --images-dir images/linux/ --bootfiles "ramdisk.cpio.gz.u-boot,boot.scr,Image,system.dtb,system-zynqmp-sck-kv-g-revB.dtb" --disk-name "mmcblk1" --wic-extra-args "-c gzip"`
 2. Burn it (use [Balena Etcher](https://etcher.balena.io/)) onto an SD card, and you should be good to go!  
 <br>
