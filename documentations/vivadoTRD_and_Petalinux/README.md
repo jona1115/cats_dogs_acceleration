@@ -122,7 +122,7 @@ Now this is important for easy GitHub push/pull.
 
 ### Java
 > Details on adding layers and recipes can be found [here](https://docs.amd.com/r/2022.2-English/ug1144-petalinux-tools-reference-guide/Adding-Layers). Below I will show how to add specifically Java.
-1. Find somewhere you want the layer to go, for Petalinux, usually, it goes in `<plnc project>/project-spec/meta-user`, so cd there, and run: `git clone https://github.com/meta-java/meta-java.git -b honister` (honister is the Yocto version Petalinux v2022.2 comes with, and all meta- stuff needs to match that).
+1. Find somewhere you want the layer to go, for Petalinux, usually, it goes in `<plnx-proj-root>/project-spec/meta-user`, so cd there, and run: `git clone https://github.com/meta-java/meta-java.git -b honister` (honister is the Yocto version Petalinux v2022.2 comes with, and all meta- stuff needs to match that).
 2. Run `petalinux-config` and go to Yocto Settings --> User Layers -> () User Layer x --> Type in the location of the meta-java folder, e.g. `${PROOT}/project-spec/meta-user/meta-java`. Save.
 3. Figure out what the recipes are called for meta-java, you can do a find (in project root run: `find . -name "openjdk*.bb"`). Recipes all end with `.bb` so it makes searching easy. Also, the recipes' naming convention is `recipename_version.bb`. Once you find them, open up `<plnx-proj-root>/project-spec/meta-user/conf/user-rootfsconfig`, and add "CONFIG_" += the recipe name to the file, for example,
     My search result was:
