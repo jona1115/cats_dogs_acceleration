@@ -21,6 +21,7 @@ There are several parts to this project:
 Current Progress:
 | Date | Progress |
 | --- | --- |
+| 8/20/2024 | Fixed Petalinux partition issue |
 | 6/11/2024 | Started looking into Tensil AI |
 | 5/30/2024 | (Side quest) Learn Yocto, spend a day [playing with it](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/yocto_fun/README.md) |
 | 5/27/2024 | Built TFLite 2.6 on the board and [documented it](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/tflite_c_on_kria/README.md) |
