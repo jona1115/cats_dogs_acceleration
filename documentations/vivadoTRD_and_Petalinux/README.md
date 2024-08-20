@@ -9,13 +9,28 @@ Tested and worked with:
 
 <br>
 
-> **Important**: If you clone the Petalinux repo, you don't have to follow this page. However, this page contains so useful debugging tips.
+> **Important**: If you clone the [Petalinux repo](https://github.com/jona1115/cats_dogs_acceleration_petalinux/), you don't have to follow this page. However, this page contains so useful debugging tips.
 
 <br>
 
 > The first two parts of this tutorial are based on [this Hackster's Tutorial](https://www.hackster.io/shreyasnr/kv260-dpu-trd-petalinux-2022-1-vivado-flow-000c0b)
 
 ***
+
+Table of Contents
+1. [DPU in Vivado](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/vivadoTRD_and_Petalinux/README.md#dpu-in-vivado)
+2. [Petalinux (Base build)](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/vivadoTRD_and_Petalinux/README.md#petalinux-base-build)
+3. [More](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/vivadoTRD_and_Petalinux/README.md#more)
+    - [openssh](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/vivadoTRD_and_Petalinux/README.md#openssh)
+    - [gcc, g++](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/vivadoTRD_and_Petalinux/README.md#gcc-g)
+    - [opencv, libmetal](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/vivadoTRD_and_Petalinux/README.md#opencv-libmetal)
+    - [Java](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/vivadoTRD_and_Petalinux/README.md#java)
+    - [Kernel Tracers](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/vivadoTRD_and_Petalinux/README.md#kernel-tracers)
+    - [Other important(-ish) stuff](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/vivadoTRD_and_Petalinux/README.md#other-important-ish-stuff)
+4. [Troubleshooting](https://github.com/jona1115/cats_dogs_acceleration/blob/main/documentations/vivadoTRD_and_Petalinux/README.md#troubleshooting)
+
+***
+
 # DPU in Vivado
 Note: If you wish to skip this part, download the generated xsa file for the next step, it is with this README, a file called `top_wrapper.xsa`.
 1. Download the DPU TRD (To the best of my knowledge TRD means it is an example project) [here](https://github.com/Xilinx/Vitis-AI/tree/3.0/dpu)
@@ -156,11 +171,22 @@ This is for using vaitrace
     1. Change the root filesystem type:  
         Run `petalinux-config` -> `Image Packaging Configuration` -> Change `Root filesystem type` from `INITRAMFS` to `EXT4 (SD/eMMC/SATA/USB)`
     2. Add these lines to `<plnx-proj-root>/project-spec/meta-user/conf/petalinuxbsp.conf`:  
-    ```
-    IMAGE_FSTYPES:remove = "cpio cpio.gz cpio.bz2 cpio.xz cpio.lzma cpio.lz4 cpio.gz.u-boot"
-    IMAGE_FSTYPES_DEBUGFS:remove = "cpio cpio.gz cpio.bz2 cpio.xz cpio.lzma cpio.lz4 cpio.gz.u-boot"
-    ```
-    Note: After doing this, `ramdisk.cpio.gz.u-boot` will not be generated. So, you need to use this command for packaging: `petalinux-package --wic --images-dir images/linux/ --bootfiles "boot.scr,Image,system.dtb,system-zynqmp-sck-kv-g-revB.dtb" --disk-name "mmcblk1" --wic-extra-args "-c gzip" --wks build/rootfs.wks`
+        ```
+        IMAGE_FSTYPES:remove = "cpio cpio.gz cpio.bz2 cpio.xz cpio.lzma cpio.lz4 cpio.gz.u-boot"
+        IMAGE_FSTYPES_DEBUGFS:remove = "cpio cpio.gz cpio.bz2 cpio.xz cpio.lzma cpio.lz4 cpio.gz.u-boot"
+        ```
+    3. Then, you want to follow [this guide](https://docs.amd.com/r/2022.2-English/Vitis-Tutorials-Vitis-Platform-Creation/Add-EXT4-rootfs-support) to allow EXT4 support. However, because every board is different, you don't want to follow it exactly. This is what you should do:
+        1. Run `petalinux-config`, and go to `Image Packaging Configuration` --> `Root File System Type` --> Select Root File System Type as EXT4. Then, save.
+        2. Run `petalinux-config`, and go to `DTG settings` -> `Kernel Bootargs` -> set `generate boot args automatically` to NO --> update User Set Kernel Bootargs to `earlycon console=???,115200 clk_ignore_unused root=/dev/??? rw rootwait cma=512M`. But what should "???" be?
+            - Now, if you are using a Kria board like I am, it is possible that your "console=" is `console=ttyPS1` and your "root=/dev/?" is `root=/dev/mmcblk1p2`. Aka use this: `earlycon console=ttyPS1,115200 clk_ignore_unused root=/dev/mmcblk1p2 rw rootwait cma=512M` for `User Set Kernel Bootargs`.
+            -  If you are not using a Kria board:
+                1. Select the auto generate bootargs option.
+                2. Save and build your project, flash it onto a SD card and boot it. In the logs, you should see a line that starts with "Kernel command line: `. Take note of what the "console=" is.
+                3. Then, go back to the petalinux-config menu and fill in the "console=" part.
+                4. For the "root=" part, there are many ways to figure this out. I like to go into the u-boot terminal (you could do this by pressing enter when you see "Hit any key to stop autoboot 3...2...1..." during boot), and type `mmc dev 0` and `mmc dev 1`. One of it will be your SD card. You can use `mmc part` to see the partition table of a device, and you can use fatls or ext4ls to "ls" the content of a partition, e.g. `ext4ls mmc 1:2` will show the content of the second partition of mmc dev 1, which in my case is the linux rootfs.
+                5. Once you locate the device number and partition, fill in the `mmcblk?p?`, using the same example as in step 4 will be `mmcblk1p2`.
+
+    Note: After doing this, `ramdisk.cpio.gz.u-boot` will not be generated. So, you need to use this command for packaging: `petalinux-package --wic --images-dir images/linux/ --bootfiles "boot.scr,Image,system.dtb,system-zynqmp-sck-kv-g-revB.dtb" --disk-name "mmcblk1" --wic-extra-args "-c gzip" --wks catsdogs-package-wic.wks --rootfs-file images/linux/rootfs.tar.gz`
 - When booted Petalinux, for some reason, they will only allocate necessary space for the second partition. Idk if this is Balena Etcher's fault or Petalinux's tools, but it is what it is. This will cause **errors when trying to write to the filesystem** when booted (like when you `dnf update`), and it will give you an error that looks like:  
 `... [Failure writing output to destination] ...`  
 To fix this, in Petalinux OS (i.e. not on your host machine where you build Petalinux but on the BOOTED Petalinux OS), do these:  
