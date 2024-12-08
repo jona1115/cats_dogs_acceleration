@@ -102,9 +102,10 @@ Now this is important for easy GitHub push/pull.
 2. Go into `Image Features` and deselect the dropbear version and select the openssh option. This will introduce some issues, follow these fix:
     1. [Fix for build error because something requires dropbear](https://support.xilinx.com/s/question/0D54U00005WcRhqSAF/petalinux-20221-building-sdk-package-dropbear-conflicting-requests?language=en_US). Summary:  
     Look for the file “packagegroup-petalinux-som.bb” in the yocto layers (petalinux_prj_dir/components/yocto/layers/meta-som/recipes-core/packagegroups). Replace `packagegroup-core-ssh-dropbear` by `packagegroup-core-ssh-openssh`.
-    2. Deselect `Filesystem Packages -> misc -> package-group-core-ssh-dropbear` [as mentioned here](https://support.xilinx.com/s/question/0D52E00006sl3paSAA/petalinux-cannot-use-openssh-instead-of-dropbear?language=en_US). Summary:  
-        1. `Filesystem Packages -> misc -> package-group-core-ssh-dropbear`
-        2. Deselect `packagegroup-core-ssh-dropbear`
+    2. Deselect `package-group-core-ssh-dropbear` [as mentioned here](https://support.xilinx.com/s/question/0D52E00006sl3paSAA/petalinux-cannot-use-openssh-instead-of-dropbear?language=en_US). Summary:  
+        1. Run `petalinux-config -c rootfs`
+        2. `Filesystem Packages -> misc -> package-group-core-ssh-dropbear`
+        3. Deselect `packagegroup-core-ssh-dropbear`
 3. Search for "openssh" and option (1), or other options, of the path: `Filesystem Packages -> console -> network -> openssh`
 4. Go into that option, there should be a bunch of openssh stuff, e.g. `openssh`, `openssh-ssh`, `openssh-sftp`, ..., `openssh-scp` I just selected all of them.
 
